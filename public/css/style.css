@@ -1,0 +1,12 @@
+.card{
+    width: 500px;
+    margin: 60px auto;
+}
+
+.login-card{
+    margin: 120px auto;
+}
+.card-footer {
+    margin-top: -15px;
+    margin-bottom: 15px;
+}
