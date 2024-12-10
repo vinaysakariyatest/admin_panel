@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign Up</title>
 
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../style.css" />
 
     <!-- Admin-LTE CSS -->
     <link
@@ -15,14 +15,21 @@
 
     <!-- Admin-LTE Script -->
     <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
-
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div class="card card-primary">
       <div class="card-header">
         <h3 class="card-title">Admin SignUp</h3>
       </div>
-      <form id="registrationForm" method="POST" enctype="application/x-www-form-urlencoded">
+      <form
+        id="registrationForm"
+        method="POST"
+        enctype="application/x-www-form-urlencoded"
+      >
         <div class="card-body">
           <div class="form-group">
             <label for="exampleInputName">Name</label>
@@ -64,34 +71,68 @@
               placeholder="Password"
             />
           </div>
+          <div class="form-group">
+            <label for="exampleInputMobile">Mobile No</label>
+            <input
+              type="number"
+              name="mobile"
+              class="form-control"
+              id="exampleInputMobile"
+              placeholder="Enter your Mobile Number"
+              pattern="[0-9]{10}"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Gender</label>
+            <div class="form-check form-check-inline ml-3">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="gender"
+                value="Male"
+                id="maleRadio"
+              />
+              <label class="form-check-label" for="maleRadio">Male</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="gender"
+                value="Female"
+                id="femaleRadio"
+              />
+              <label class="form-check-label" for="femaleRadio">Female</label>
+            </div>
+          </div>
         </div>
         <div class="card-footer bg-white text-center">
-          <button type="submit" class="btn btn-primary">
-            Sign Up
-          </button>
+          <button type="submit" class="btn btn-primary">Sign Up</button>
         </div>
       </form>
     </div>
-  
+
     <script>
-      const form = document.getElementById('registrationForm');
-      const nameInput = document.getElementById('exampleInputName');
-      const emailInput = document.getElementById('exampleInputEmail1');
-      const passwordInput = document.getElementById('exampleInputPassword1');
-      const cpasswordInput = document.getElementById('exampleInputPassword2');
-    
-      form.addEventListener('submit', (event) => {
+      const form = document.getElementById("registrationForm");
+      const nameInput = document.getElementById("exampleInputName");
+      const emailInput = document.getElementById("exampleInputEmail1");
+      const passwordInput = document.getElementById("exampleInputPassword1");
+      const cpasswordInput = document.getElementById("exampleInputPassword2");
+      const mobileInput = document.getElementById("exampleInputMobile");
+      const genderInputs = document.getElementsByName("gender");
+
+      form.addEventListener("submit", (event) => {
         event.preventDefault(); // Prevent the form from submitting immediately
         let isValid = true;
-    
+
         // Name validation
-        if (nameInput.value.trim() === '') {
+        if (nameInput.value.trim() === "") {
           showError(nameInput);
           isValid = false;
         } else {
           hideError(nameInput);
         }
-    
+
         // Email validation
         if (!isValidEmail(emailInput.value.trim())) {
           showError(emailInput);
@@ -99,56 +140,65 @@
         } else {
           hideError(emailInput);
         }
-    
+
         // Password validation
-        if (passwordInput.value.trim() === '') {
+        if (passwordInput.value.trim() === "") {
           showError(passwordInput);
           isValid = false;
         } else {
           hideError(passwordInput);
         }
-    
+
         // Confirm Password validation
-        if (cpasswordInput.value.trim() === '') {
+        if (cpasswordInput.value.trim() === "") {
           showError(cpasswordInput);
           isValid = false;
         } else {
           hideError(cpasswordInput);
         }
-    
+
         // Password and confirm password match check
         if (passwordInput.value !== cpasswordInput.value) {
           alert("Password and Confirm Password do not match");
           isValid = false;
         }
-    
+
+        if (mobileInput.value.trim() === "") {
+          showError(mobileInput);
+          isValid = false;
+        } else {
+          hideError(mobileInput);
+        }
+
+         // Gender validation
+  if (![...genderInputs].some((input) => input.checked)) {
+    alert("Please select your gender");
+    isValid = false;
+  }
+
         // Submit the form if all inputs are valid
         if (isValid) {
           form.submit();
         }
       });
-    
+
       function showError(input) {
-        input.classList.add('is-invalid');
+        input.classList.add("is-invalid");
       }
-    
+
       function hideError(input) {
-        input.classList.remove('is-invalid');
+        input.classList.remove("is-invalid");
       }
-    
+
       function isValidEmail(email) {
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailPattern.test(email);
       }
     </script>
-    
-  
     <style>
       .is-invalid {
         border: 2px solid red !important;
       }
     </style>
   </body>
-  
-  
 </html>

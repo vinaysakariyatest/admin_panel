@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin-List</title>
+
+    <link rel="stylesheet" href="../style.css" />
+
+    <!-- Admin-LTE CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css"
+    />
+
+    <!-- Admin-LTE Script -->
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+
+    <!-- Ionicons -->
+    <link
+      rel="stylesheet"
+      href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"
+    />
+
+    <!-- Google Font: Source Sans Pro -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstarp CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <style>
+      .icon{
+        font-size: 18px;
+        margin: 0 5px;
+      }
+      .delete{
+        color: rgb(245, 26, 26);
+      }
+    </style>
+  </head>
+  <body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+      <!-- Navbar -->
+      <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"
+              ><i class="fas fa-bars"></i
+            ></a>
+          </li>
+          <li class="nav-item d-none d-sm-inline-block">
+            <a href="/dashboard " class="nav-link">Home</a>
+          </li>
+        </ul>
+      </nav>
+      <!-- /.navbar -->
+
+      <!-- Main Sidebar Container -->
+      <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a href="/dashboard" class="brand-link">
+          <img
+            src="../logo.webp"
+            alt="AdminLTE Logo"
+            class="brand-image img-circle elevation-3"
+            style="opacity: 0.8"
+          />
+          <span class="brand-text font-weight-light">AdminLTE 3</span>
+        </a>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+          <!-- Sidebar user panel (optional) -->
+          <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+              <img
+                src="../user.jpg"
+                class="img-circle elevation-2"
+                alt="User Image"
+              />
+            </div>
+            <div class="info">
+              <a href="#" class="d-block">Vinay Sakariya</a>
+            </div>
+          </div>
+
+          <!-- Sidebar Menu -->
+          <nav class="mt-2">
+            <ul
+              class="nav nav-pills nav-sidebar flex-column"
+              data-widget="treeview"
+              role="menu"
+              data-accordion="false"
+            >
+              <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+              <li class="nav-item">
+                <a href="/dashboard" class="nav-link">
+                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                  <p>Dashboard</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/admin-list" class="nav-link">
+                  <!-- <i class="nav-icon fas fa-th"></i> -->
+                  <i class="nav-icon fas fa-solid fa-user"></i>
+                  <p>Add User</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/logout" class="nav-link">
+                  <i class="nav-icon fas fa-solid fa-power-off"></i>
+                  <p>Logout</p>
+                </a>
+              </li>
+            </ul>
+          </nav>
+          <!-- /.sidebar-menu -->
+        </div>
+        <!-- /.sidebar -->
+      </aside>
+
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+          <div class="container-fluid">
+            <div class="row mb-2">
+              <div class="col-sm-6">
+                <h1 class="m-0">Admin List</h1>
+              </div>
+              <!-- /.col -->
+              <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                  <li class="breadcrumb-item">
+                    <a href="#"
+                      ><button
+                        class="btn btn-outline-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModal"
+                      >
+                        Add
+                      </button></a
+                    >
+                  </li>
+                </ol>
+              </div>
+            </div>
+            <!-- /.row -->
+             
+            <div class="row my-4">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Mobile No</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% getAdmin.forEach(function(data) { %>
+                    <tr>
+                      <td><%= data.name %></td>
+                      <td><%= data.email %></td>
+                      <td><%= data.mobile %></td>
+                      <td><%= data.gender %></td>
+                      <td>
+                        <a href="/update"><i class="fa-solid fa-pen-to-square icon edit"></i></a>
+                        <a href="/delete/<%= data._id%>"><i class="fa-solid fa-trash icon delete"></i></a>
+                      </td>
+                    </tr>
+                  <% }) %>
+                </tbody>
+                
+              </table>
+            </div>
+          </div>
+          <!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+        <!-- /.content -->
+      </div>
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Add User</h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div class="container">
+                <form
+                  method="POST"
+                  action="/signup"
+                  id="registrationForm"
+                  method="POST"
+                  enctype="application/x-www-form-urlencoded"
+                >
+                  <!-- Row for Name and Email fields -->
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="exampleInputName" class="form-label"
+                        >Name</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="exampleInputName"
+                        name="name"
+                        placeholder="Enter your name"
+                      />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="exampleInputEmail1" class="form-label"
+                        >Email</label
+                      >
+                      <input
+                        type="email"
+                        class="form-control"
+                        id="exampleInputEmail1"
+                        aria-describedby="emailHelp"
+                        name="email"
+                        placeholder="Enter your email"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Row for Password and Confirm Password fields -->
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="exampleInputPassword1" class="form-label"
+                        >Password</label
+                      >
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="exampleInputPassword1"
+                        name="password"
+                        placeholder="Enter your password"
+                      />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="exampleInputPassword2" class="form-label"
+                        >Confirm Password</label
+                      >
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="exampleInputPassword2"
+                        name="password"
+                        placeholder="Confirm your password"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Row for Mobile No -->
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="exampleInputMobile" class="form-label"
+                        >Mobile No</label
+                      >
+                      <input
+                        type="number"
+                        name="mobile"
+                        class="form-control"
+                        id="exampleInputMobile"
+                        placeholder="Enter your Mobile Number"
+                        pattern="[0-9]{10}"
+                      />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label">Gender</label>
+                      <div class="col-md-6">
+                        <div class="form-check form-check-inline">
+                          <input
+                            class="form-check-input"
+                            type="radio"
+                            name="gender"
+                            value="Male"
+                            id="maleRadio"
+                          />
+                          <label class="form-check-label" for="maleRadio"
+                            >Male</label
+                          >
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input
+                            class="form-check-input"
+                            type="radio"
+                            name="gender"
+                            value="Female"
+                            id="femaleRadio"
+                          />
+                          <label class="form-check-label" for="femaleRadio"
+                            >Female</label
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                class="btn btn-primary"
+                onclick="submitForm()"
+                type="button"
+              >
+                Add
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- /.content-wrapper -->
+      <footer class="main-footer">
+        <strong
+          >Copyright &copy; 2014-2021
+          <a href="https://adminlte.io">AdminLTE.io</a>.</strong
+        >
+        All rights reserved.
+        <div class="float-right d-none d-sm-inline-block">
+          <b>Version</b> 3.2.0
+        </div>
+      </footer>
+
+      <!-- Control Sidebar -->
+      <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+      </aside>
+      <!-- /.control-sidebar -->
+    </div>
+    <!-- ./wrapper -->
+
+    <!-- <script>
+      async function submitForm() {
+        
+        const form = document.getElementById("registrationForm");
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        try {
+          const response = await fetch("/signup", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          });
+
+          if (response.ok) {
+            alert("Registration Successful");
+            // Hide the modal
+            const modal = bootstrap.Modal.getInstance(
+              document.getElementById("exampleModal")
+            );
+            modal.hide();
+          } else {
+            const errorText = await response.text();
+            alert(`${errorText}`);
+          }
+        } catch (error) {
+          console.error("Error submitting form:", error);
+          alert("An unexpected error occurred.");
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const modalElement = document.getElementById("exampleModal");
+        modalElement.addEventListener("hidden.bs.modal", () => {
+          document.getElementById("registrationForm").reset();
+        });
+      });
+    </script> -->
+
+    <script>
+      const form = document.getElementById("registrationForm");
+      const nameInput = document.getElementById("exampleInputName");
+      const emailInput = document.getElementById("exampleInputEmail1");
+      const passwordInput = document.getElementById("exampleInputPassword1");
+      const cpasswordInput = document.getElementById("exampleInputPassword2");
+      const mobileInput = document.getElementById("exampleInputMobile");
+      const genderInputs = document.getElementsByName("gender");
+
+      async function submitForm() {
+        let isValid = validateForm();
+
+        if (isValid) {
+          const formData = new FormData(form);
+          const data = Object.fromEntries(formData.entries());
+
+          try {
+            const response = await fetch("/signup", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(data),
+            });
+
+            if (response.ok) {
+              alert("Registration Successful");
+              const modal = bootstrap.Modal.getInstance(
+                document.getElementById("exampleModal")
+              );
+              modal.hide();
+              form.reset();
+            } else {
+              const errorText = await response.text();
+              alert(`Error: ${errorText}`);
+            }
+          } catch (error) {
+            console.error("Error submitting form:", error);
+            alert("An unexpected error occurred.");
+          }
+        }
+      }
+
+      function validateForm() {
+        let isValid = true;
+
+        // Name validation
+        if (nameInput.value.trim() === "") {
+          showError(nameInput);
+          isValid = false;
+        } else {
+          hideError(nameInput);
+        }
+
+        // Email validation
+        if (!isValidEmail(emailInput.value.trim())) {
+          showError(emailInput);
+          isValid = false;
+        } else {
+          hideError(emailInput);
+        }
+
+        // Password validation
+        if (passwordInput.value.trim() === "") {
+          showError(passwordInput);
+          isValid = false;
+        } else {
+          hideError(passwordInput);
+        }
+
+        // Confirm Password validation
+        if (
+          passwordInput.value.trim() !== "" &&
+          cpasswordInput.value.trim() !== ""
+        ) {
+          if (passwordInput.value !== cpasswordInput.value) {
+            alert("Password and Conf  irm Password do not match");
+            showError(cpasswordInput);
+            isValid = false;
+          } else {
+            hideError(cpasswordInput);
+          }
+        } else if (cpasswordInput.value.trim() === "") {
+          showError(cpasswordInput);
+          isValid = false;
+        } else {
+          hideError(cpasswordInput);
+        }
+
+        // Mobile validation
+        if (mobileInput.value.trim() === "") {
+          showError(mobileInput);
+          isValid = false;
+        } else {
+          hideError(mobileInput);
+        }
+
+        // Gender validation
+        if (![...genderInputs].some((input) => input.checked)) {
+          alert("Please select your gender");
+          isValid = false;
+        }
+
+        return isValid;
+      }
+
+      function showError(input) {
+        input.classList.add("is-invalid");
+      }
+
+      function hideError(input) {
+        input.classList.remove("is-invalid");
+      }
+
+      function isValidEmail(email) {
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailPattern.test(email);
+      }
+    </script>
+
+    <style>
+      .is-invalid {
+        border: 2px solid red !important;
+      }
+    </style>
+
+    <!-- Bootstrap JS File -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
