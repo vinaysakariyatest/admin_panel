@@ -5,6 +5,7 @@ const { isAuthenticated } = require("../Middleware/auth")
 
 // ==========Registartion==========
 router.get("/",admin.loginForm)
+
 router.get("/signup",admin.signupForm)
 router.post("/signup",admin.signup)
 
@@ -27,7 +28,20 @@ router.get('/admin-list',admin.getAdminList)
 router.get('/delete/:id',admin.deleteadmin)
 
 // ==========Update AdminList========
-router.get("/update",admin.getUpdate)
+router.get("/update/:id",admin.getUpdate)
 
-// router.get("/update/:id",admin.updateData)
+router.post("/update/:id",admin.updateAdmin)
+
+// ===========City================
+router.get("/city",admin.getCity)
+
+router.post("/city",admin.addCity)
+
+router.post("/city/:id/status",admin.cityStatus)
+
+router.get("/update_c/:id",admin.getUpdateCity)
+
+router.post("/update_c/:id",admin.updateCity)
+
+router.get("/delete_c/:id",admin.deleteCity)
 module.exports = router

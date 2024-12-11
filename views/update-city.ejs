@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Update</title>
+    <title>Update-City</title>
 
     <link rel="stylesheet" href="../style.css" />
 
@@ -109,7 +109,13 @@
                 <a href="/admin-list" class="nav-link">
                   <!-- <i class="nav-icon fas fa-th"></i> -->
                   <i class="nav-icon fas fa-solid fa-user"></i>
-                  <p>Add User</p>
+                  <p>Admin</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/city" class="nav-link">
+                  <i class="nav-icon fas fa-solid fa-city"></i>
+                  <p>City</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -129,103 +135,34 @@
       <div class="content-wrapper py-5">
         
         <div class="container form-container w-50">
-          <h4 class="mb-3">Update</h4>
-          <% if (adminList && adminList.length > 0) { 
-            const user = adminList[0]; // Access the single user data %>
-          <form method="POST" enctype="application/x-www-form-urlencoded"  action="/update/<%= user._id %>">
+          <h4 class="mb-3">Update City</h4>
+          <form method="POST" enctype="application/x-www-form-urlencoded"  action="/update_c/<%= getCity._id %>">
             <div class="mb-3">
-              <label for="exampleInputName" class="form-label">Name</label>
+              <label for="exampleInputName" class="form-label">City Name</label>
               <input
                 type="text"
                 class="form-control"
                 id="exampleInputName"
-                name="name"
+                name="city"
                 placeholder="Enter your name"
-                value="<%= user.name %>"
+                value="<%= getCity.city %>"
               />
             </div>
-        
             <div class="mb-3">
-              <label for="exampleInputEmail1" class="form-label">Email</label>
-              <input
-                type="email"
-                class="form-control"
-                id="exampleInputEmail1"
-                aria-describedby="emailHelp"
-                name="email"
-                placeholder="Enter your email"
-                value="<%= user.email %>"
-              />
+                <label for="isActive" class="form-label">isActive</label>
+                <div class="form-check form-switch">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    name="isActive"
+                    id="isActive"
+                    value="true"
+                    <%= getCity.isActive ? 'checked' : '' %>
+                  />
+                </div>
             </div>
-        
-            <div class="mb-3">
-              <label for="exampleInputPassword1" class="form-label">Password</label>
-              <input
-                type="password"
-                class="form-control"
-                id="exampleInputPassword1"
-                name="password"
-                placeholder="Enter new password"
-              />
-            </div>
-        
-            <div class="mb-3">
-              <label for="exampleInputMobile" class="form-label">Mobile No</label>
-              <input
-                type="number"
-                class="form-control"
-                id="exampleInputMobile"
-                name="mobile"
-                placeholder="Enter your Mobile No"
-                value="<%= user.mobile %>"
-              />
-            </div>
-        
-            <div class="mb-3">
-              <label class="form-label">Gender</label>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input ml-1"
-                  type="radio"
-                  name="gender"
-                  value="Male"
-                  id="maleRadio"
-                  <% if (user.gender === 'Male') { %> checked <% } %>
-                />
-                <label class="form-check-label" for="maleRadio">Male</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="radio"
-                  name="gender"
-                  value="Female"
-                  id="femaleRadio"
-                  <% if (user.gender === 'Female') { %> checked <% } %>
-                />
-                <label class="form-check-label" for="femaleRadio">Female</label>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <div class="mb-3">
-                <label for="exampleInputCity" class="form-label">City</label>
-                <select class="form-select ml-3" name="city" required>
-                  <option selected disabled>--- Select your City ---</option>
-                  <% cities.forEach(city => { %>
-                    <option value="<%= city.city %>" 
-                      <%= city.city.trim().toLowerCase() === user.city.trim().toLowerCase() ? 'selected' : '' %>>
-                      <%= city.city %>
-                      </option>
-                  <% }); %>
-                </select>
-                
-              </div>
-            </div>
-        
             <button class="btn btn-primary" type="submit">Update</button>
           </form>
-          <% } %>
         </div>
         
         <!-- /.content -->

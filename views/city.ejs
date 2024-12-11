@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin-List</title>
+    <title>City-List</title>
 
     <link rel="stylesheet" href="../style.css" />
 
@@ -48,9 +48,6 @@
       }
       .delete {
         color: rgb(245, 26, 26);
-      }
-      .search {
-        height: 32px;
       }
     </style>
   </head>
@@ -109,8 +106,6 @@
               role="menu"
               data-accordion="false"
             >
-              <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
               <li class="nav-item">
                 <a href="/dashboard" class="nav-link">
                   <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -150,7 +145,7 @@
           <div class="content-header">
             <div class="row">
               <div class="col-sm-6">
-                <h1 class="m-0">Admin List</h1>
+                <h1 class="m-0">City List</h1>
               </div>
               <!-- /.col -->
               <div class="col-sm-6">
@@ -192,39 +187,35 @@
               <thead>
                 <tr>
                   <th scope="col">Name</th>
-                  <th scope="col">Email</th>
-                  <th scope="col">Mobile No</th>
-                  <th scope="col">Gender</th>
-                  <th scope="col">City</th>
+                  <th scope="col">isActive</th>
                   <th scope="col">Action</th>
                 </tr>
               </thead>
               <tbody>
-                <% if (getAdmin.length > 0) { %> <%
-                getAdmin.forEach(function(data) { %>
+                <% allCity.forEach(function(city) { %>
                 <tr>
-                  <td><%= data.name %></td>
-                  <td><%= data.email %></td>
-                  <td><%= data.mobile %></td>
-                  <td><%= data.gender %></td>
-                  <td><%= data.city %></td>
+                  <td><%= city.city %></td>
                   <td>
-                    <a href="/update/<%= data._id %>"
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox"
+                      name="isActive" id="isActive_<%= city._id %>" <%=
+                      city.isActive ? 'checked' : '' %>
+                      onchange="updateCityStatus('<%= city._id %>',
+                      this.checked)" >
+                    </div>
+                  </td>
+                  <td>
+                    <a href="/update_c/<%= city._id %>"
                       ><i class="fa-solid fa-pen-to-square icon edit"></i
                     ></a>
-                    <a href="/delete/<%= data._id %>"
+                    <a href="/delete_c/<%= city._id %>"
                       ><i class="fa-solid fa-trash icon delete"></i
                     ></a>
                   </td>
                 </tr>
-                <% }) %> <% } else { %>
-                <tr>
-                  <td colspan="5" class="text-center">No Data Found</td>
-                </tr>
-                <% } %>
+                <% }) %>
               </tbody>
             </table>
-
             <div class="card-footer clearfix">
               <ul class="pagination pagination-sm m-0 float-right">
                 <% if (currentPage > 1) { %>
@@ -273,10 +264,10 @@
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
       >
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-body">
           <div class="modal-content">
             <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">Add User</h1>
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Add City</h1>
               <button
                 type="button"
                 class="btn-close"
@@ -288,122 +279,34 @@
               <div class="container">
                 <form
                   method="POST"
-                  action="/signup"
-                  id="registrationForm"
+                  action="/city"
+                  id="cityForm"
                   enctype="application/x-www-form-urlencoded"
                 >
                   <!-- Row for Name and Email fields -->
                   <div class="row">
-                    <div class="col-md-6 mb-3">
+                    <div class="col-md-12 mb-3">
                       <label for="exampleInputName" class="form-label"
-                        >Name</label
+                        >City Name</label
                       >
                       <input
                         type="text"
                         class="form-control"
                         id="exampleInputName"
-                        name="name"
-                        placeholder="Enter your name"
+                        name="city"
+                        placeholder="Enter City name"
                       />
                     </div>
-                    <div class="col-md-6 mb-3">
-                      <label for="exampleInputEmail1" class="form-label"
-                        >Email</label
-                      >
-                      <input
-                        type="email"
-                        class="form-control"
-                        id="exampleInputEmail1"
-                        aria-describedby="emailHelp"
-                        name="email"
-                        placeholder="Enter your email"
-                      />
-                    </div>
-                  </div>
-
-                  <!-- Row for Password and Confirm Password fields -->
-                  <div class="row">
-                    <div class="col-md-6 mb-3">
-                      <label for="exampleInputPassword1" class="form-label"
-                        >Password</label
-                      >
-                      <input
-                        type="password"
-                        class="form-control"
-                        id="exampleInputPassword1"
-                        name="password"
-                        placeholder="Enter your password"
-                      />
-                    </div>
-                    <div class="col-md-6 mb-3">
-                      <label for="exampleInputPassword2" class="form-label"
-                        >Confirm Password</label
-                      >
-                      <input
-                        type="password"
-                        class="form-control"
-                        id="exampleInputPassword2"
-                        name="password"
-                        placeholder="Confirm your password"
-                      />
-                    </div>
-                  </div>
-
-                  <!-- Row for Mobile No -->
-                  <div class="row">
-                    <div class="col-md-6 mb-3">
-                      <label for="exampleInputMobile" class="form-label"
-                        >Mobile No</label
-                      >
-                      <input
-                        type="number"
-                        name="mobile"
-                        class="form-control"
-                        id="exampleInputMobile"
-                        placeholder="Enter your Mobile Number"
-                        pattern="[0-9]{10}"
-                      />
-                    </div>
-                    <div class="col-md-6 mb-3">
-                      <label class="form-label">Gender</label>
-                      <div class="d-flex align-items-center">
-                        <div class="form-check form-check-inline">
-                          <input
-                            class="form-check-input"
-                            type="radio"
-                            name="gender"
-                            value="Male"
-                            id="maleRadio"
-                          />
-                          <label class="form-check-label" for="maleRadio"
-                            >Male</label
-                          >
-                        </div>
-                        <div class="form-check form-check-inline">
-                          <input
-                            class="form-check-input"
-                            type="radio"
-                            name="gender"
-                            value="Female"
-                            id="femaleRadio"
-                          />
-                          <label class="form-check-label" for="femaleRadio"
-                            >Female</label
-                          >
-                        </div>
+                    <div class="col-md-12 mb-3">
+                      <label for="isActive" class="form-label">isActive</label>
+                      <div class="form-check form-switch">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="isActive"
+                          id="isActive"
+                        />
                       </div>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-md-6 mb-3">
-                      <label for="exampleInputCity" class="form-label">City</label>
-                      <select class="form-select ml-3" name="city" required>
-                        <option selected disabled>--- Select your City ---</option>
-                        <% cities.forEach(city => { %>
-                          <option value="<%= city.city %>"><%= city.city %></option>
-                        <% }); %>
-                      </select>
                     </div>
                   </div>
                 </form>
@@ -417,11 +320,7 @@
               >
                 Close
               </button>
-              <button
-                class="btn btn-primary"
-                onclick="submitForm()"
-                type="button"
-              >
+              <button id="addCityBtn" class="btn btn-primary" type="button">
                 Add
               </button>
             </div>
@@ -449,15 +348,28 @@
     </div>
     <!-- ./wrapper -->
 
-    <!-- <script>
+    <script>
       async function submitForm() {
-        
-        const form = document.getElementById("registrationForm");
+        const form = document.getElementById("cityForm");
+
+        // Simple validation: Ensure city name is not empty
+        let cityName = document.getElementById("exampleInputName").value.trim();
+        if (!cityName) {
+          alert("City name is required.");
+          return;
+        }
+
+        const isActive = document.getElementById("isActive").checked;
+
+        // Prepare the form data
         const formData = new FormData(form);
+        formData.append("isActive", isActive ? "on" : "off"); // Ensure isActive is sent correctly
+
         const data = Object.fromEntries(formData.entries());
 
         try {
-          const response = await fetch("/signup", {
+          // Sending data to the backend
+          const response = await fetch("/city", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -466,15 +378,18 @@
           });
 
           if (response.ok) {
-            alert("Registration Successful");
+            // On successful response
+            alert("City added successfully!");
+
             // Hide the modal
             const modal = bootstrap.Modal.getInstance(
               document.getElementById("exampleModal")
             );
             modal.hide();
+            form.reset();
           } else {
             const errorText = await response.text();
-            alert(`${errorText}`);
+            alert(`Error: ${errorText}`);
           }
         } catch (error) {
           console.error("Error submitting form:", error);
@@ -482,139 +397,32 @@
         }
       }
 
-      document.addEventListener("DOMContentLoaded", () => {
-        const modalElement = document.getElementById("exampleModal");
-        modalElement.addEventListener("hidden.bs.modal", () => {
-          document.getElementById("registrationForm").reset();
-        });
-      });
-    </script> -->
+      document
+        .getElementById("addCityBtn")
+        .addEventListener("click", submitForm);
 
-    <script>
-      const form = document.getElementById("registrationForm");
-      const nameInput = document.getElementById("exampleInputName");
-      const emailInput = document.getElementById("exampleInputEmail1");
-      const passwordInput = document.getElementById("exampleInputPassword1");
-      const cpasswordInput = document.getElementById("exampleInputPassword2");
-      const mobileInput = document.getElementById("exampleInputMobile");
-      const genderInputs = document.getElementsByName("gender");
+      // ============City Status============
+      async function updateCityStatus(cityId, isActive) {
+        try {
+          const response = await fetch(`/city/${cityId}/status`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ isActive }),
+          });
 
-      async function submitForm() {
-        let isValid = validateForm();
-
-        if (isValid) {
-          const formData = new FormData(form);
-          const data = Object.fromEntries(formData.entries());
-
-          try {
-            const response = await fetch("/signup", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(data),
-            });
-
-            if (response.ok) {
-              alert("Registration Successfull");
-              const modal = bootstrap.Modal.getInstance(
-                document.getElementById("exampleModal")
-              );
-              modal.hide();
-              form.reset();
-            } else {
-              const errorText = await response.text();
-              alert(`Error: ${errorText}`);
-            }
-          } catch (error) {
-            console.error("Error submitting form:", error);
-            alert("An unexpected error occurred.");
-          }
-        }
-      }
-
-      function validateForm() {
-        let isValid = true;
-
-        // Name validation
-        if (nameInput.value.trim() === "") {
-          showError(nameInput);
-          isValid = false;
-        } else {
-          hideError(nameInput);
-        }
-
-        // Email validation
-        if (!isValidEmail(emailInput.value.trim())) {
-          showError(emailInput);
-          isValid = false;
-        } else {
-          hideError(emailInput);
-        }
-
-        // Password validation
-        if (passwordInput.value.trim() === "") {
-          showError(passwordInput);
-          isValid = false;
-        } else {
-          hideError(passwordInput);
-        }
-
-        // Confirm Password validation
-        if (
-          passwordInput.value.trim() !== "" &&
-          cpasswordInput.value.trim() !== ""
-        ) {
-          if (passwordInput.value !== cpasswordInput.value) {
-            alert("Password and Conf  irm Password do not match");
-            showError(cpasswordInput);
-            isValid = false;
+          if (response.ok) {
+            const result = await response.json();
           } else {
-            hideError(cpasswordInput);
+            throw new Error("Failed to update city status.");
           }
-        } else if (cpasswordInput.value.trim() === "") {
-          showError(cpasswordInput);
-          isValid = false;
-        } else {
-          hideError(cpasswordInput);
+        } catch (error) {
+          console.error("Error updating city status:", error);
+          alert("An error occurred while updating city status.");
         }
-
-        // Mobile validation
-        if (mobileInput.value.trim() === "") {
-          showError(mobileInput);
-          isValid = false;
-        } else {
-          hideError(mobileInput);
-        }
-
-        // Gender validation
-        if (![...genderInputs].some((input) => input.checked)) {
-          alert("Please select your gender");
-          isValid = false;
-        }
-
-        return isValid;
-      }
-
-      function showError(input) {
-        input.classList.add("is-invalid");
-      }
-
-      function hideError(input) {
-        input.classList.remove("is-invalid");
-      }
-
-      function isValidEmail(email) {
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailPattern.test(email);
       }
     </script>
-
-    <style>
-      .is-invalid {
-        border: 2px solid red !important;
-      }
-    </style>
 
     <!-- Bootstrap JS File -->
     <script

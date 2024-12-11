@@ -15,6 +15,9 @@ const adminSchema = new mongoose.Schema({
     },
     gender:{
         type: String
+    },
+    city:{
+        type: String
     }
 })
 
