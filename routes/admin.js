@@ -22,7 +22,7 @@ router.get('/logout',admin.logout)
 
 // router.get('/adminList',admin.adminList)
 
-router.get('/admin-list',admin.getAdminList)
+router.get('/admin-list',isAuthenticated,admin.getAdminList)
 
 // =======Delete AdminList=========
 router.get('/delete/:id',admin.deleteadmin)
@@ -33,7 +33,7 @@ router.get("/update/:id",admin.getUpdate)
 router.post("/update/:id",admin.updateAdmin)
 
 // ===========City================
-router.get("/city",admin.getCity)
+router.get("/city",isAuthenticated,admin.getCity)
 
 router.post("/city",admin.addCity)
 

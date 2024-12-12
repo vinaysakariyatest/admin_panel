@@ -1,7 +1,7 @@
 const adminModel = require("../models/admin");
 const cityModel = require("../models/city")
 const bcrypt = require("bcrypt");
-
+const mailer = require("../helpers/mailer")
 // ===================Registration=================
 exports.signupForm = async (req, res) => {
   const cities = await cityModel.find({ isActive: true }).sort({ city: 1 });
@@ -12,37 +12,54 @@ exports.signupForm = async (req, res) => {
 exports.signup = async (req, res) => {
   try {
     const { name, email, password, mobile, gender, city } = req.body;
+
+    const normalPassword = req.body.password
     const hashPassword = await bcrypt.hash(password, 10);
+
+    // Check if email already exists
     const existEmail = await adminModel.findOne({ email });
-    const mobilePattern = /^[0-9]{10}$/;
-
     if (existEmail) {
-      return res.status(409).send("Email already exist");
+      return res.status(409).json({ message: "Email already exists" });
     }
 
-    // Correct way to validate the mobile number
-    if (!mobilePattern.test(mobile)) {
-      return res.status(409).send("Please enter a valid phone number");
+    // Check if mobile already exists
+    const mobileExist = await adminModel.findOne({ mobile });
+    if (mobileExist) {
+      return res.status(409).json({ message: "Mobile number already exists" });
     }
+
+    // Validate mobile number
+    const mobilePattern = /^[0-9]{10}$/;
+    if (!mobilePattern.test(mobile)) {
+      return res.status(400).json({ message: "Invalid mobile number. Please enter a valid 10-digit number." });
+    }
+
+    // Create new admin
     const createAdmin = await adminModel.create({
       name,
       email,
       password: hashPassword,
       mobile,
       gender,
-      city
+      city,
     });
+
     if (!createAdmin) {
-      return res.status(409).send("Registration Failed");
-    }
-    return res.status(201).send("Registration Successfull");
-    res.redirect("/signup");
+      return res.status(400).json({ message: "Registration failed. Please try again." });
+    }else{
+      // const msg = "Your account has been registered in 11za <br><b>Email:</b> " + createAdmin.email + "<br><b>Password:</b> " + normalPassword;
   
+      mailer.sendMail(email,"Registration",normalPassword);
+      return res.status(201).json({ message: "Registration successful" });
+    }
+
+
   } catch (error) {
-    console.log("========ERROR on Registration=========");
-    return res.status(500).json({ message: error });
+    console.error("========ERROR on Registration=========", error);
+    return res.status(500).json({ message: "Internal Server Error. Please try again later." });
   }
 };
+
 
 // ===================Login================
 exports.loginForm = async (req, res) => {
@@ -78,7 +95,21 @@ exports.login = async (req, res) => {
 
 // ================Dashboard===============
 exports.dashboard = async (req, res) => {
-  res.render("dashboard");
+  try {
+    const totalRecords = await adminModel.countDocuments();
+    const totalRecordsCity = await cityModel.countDocuments();
+    
+    const adminName = req.session.user.name
+
+    res.render("dashboard", {
+      totalRecords, 
+      totalRecordsCity,
+      adminName
+    });
+  } catch (error) {
+    console.log("============ERROR on Get Dashboard=============");
+    return res.status(500).json({ message: error.message });
+  }
 };
 
 // ================Logout=================
@@ -109,6 +140,7 @@ exports.getAdminList = async (req, res) => {
             { name: { $regex: search, $options: "i" } },
             { gender: { $regex: search, $options: "i" } },
             { email: { $regex: search, $options: "i" } },
+            { city: { $regex: search, $options: "i" } },
           ],
         }
       : {};
@@ -118,6 +150,7 @@ exports.getAdminList = async (req, res) => {
       .skip(skip)
       .limit(Number(limit));
       const cities = await cityModel.find({ isActive: true }).sort({ city: 1 });
+      let adminName = req.session.user.name
 
     const totalRecords = await adminModel.countDocuments(searchQuery);
 
@@ -128,7 +161,8 @@ exports.getAdminList = async (req, res) => {
       currentPage: Number(page),
       totalPages,
       search,
-      cities
+      cities,
+      adminName
     });
   } catch (error) {
     console.log("============ERROR on Get Admin List=============");
@@ -227,6 +261,8 @@ exports.getCity = async(req, res) => {
       .find(searchQuery)
       .skip(skip)
       .limit(Number(limit));
+      let adminName = req.session.user.name
+    
 
     const totalRecords = await adminModel.countDocuments(searchQuery);
 
@@ -236,7 +272,8 @@ exports.getCity = async(req, res) => {
       allCity,
       currentPage: Number(page),
       totalPages,
-      search
+      search,
+      adminName
     });
 
   } catch (error) {

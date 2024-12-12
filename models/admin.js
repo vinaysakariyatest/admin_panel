@@ -18,6 +18,10 @@ const adminSchema = new mongoose.Schema({
     },
     city:{
         type: String
+    },
+    isActive:{
+        type: Boolean,
+        default: false
     }
 })
 

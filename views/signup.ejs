@@ -20,7 +20,7 @@
       rel="stylesheet"
     />
 
-     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
   <body>
     <div class="card card-primary">
@@ -111,13 +111,12 @@
           <div class="form-group">
             <div class="mb-3">
               <label for="exampleInputCity" class="form-label">City</label>
-              <select class="form-select ml-3" name="city" required>
+              <select class="form-select ml-3" id="city" name="city" required>
                 <option selected disabled>--- Select your City ---</option>
                 <% cities.forEach(city => { %>
-                  <option value="<%= city.city %>"><%= city.city %></option>
+                <option value="<%= city.city %>"><%= city.city %></option>
                 <% }); %>
               </select>
-              
             </div>
           </div>
         </div>
@@ -127,7 +126,7 @@
       </form>
     </div>
 
-    <script>
+    <!-- <script>
       const form = document.getElementById("registrationForm");
       const nameInput = document.getElementById("exampleInputName");
       const emailInput = document.getElementById("exampleInputEmail1");
@@ -209,6 +208,131 @@
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailPattern.test(email);
       }
+    </script> -->
+
+    <script>
+      document
+        .getElementById("registrationForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault(); // Prevent default form submission
+          let isValid = true;
+
+          const formData = new FormData(this);
+          const nameInput = document.getElementById("exampleInputName");
+          const emailInput = document.getElementById("exampleInputEmail1");
+          const passwordInput = document.getElementById(
+            "exampleInputPassword1"
+          );
+          const cpasswordInput = document.getElementById(
+            "exampleInputPassword2"
+          );
+          const mobileInput = document.getElementById("exampleInputMobile");
+          const genderInputs = document.getElementsByName("gender");
+          const citySelect = document.querySelector("#city");
+          const data = Object.fromEntries(formData.entries());
+
+          // Send data to the backend using fetch
+          try {
+            const response = await fetch("/signup", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+              // Success Alert
+              Swal.fire({
+                icon: "success",
+                title: "Success",
+                text: "You have successfully registered!",
+              });
+            } else {
+              // Error Alert
+              Swal.fire({
+                icon: "error",
+                title: "Error",
+                text:
+                  result.message || "Registration failed, please try again.",
+              });
+            }
+
+            // Name field validation
+            if (!nameInput.value.trim()) {
+              Swal.fire({
+                icon: "error",
+                title: "Validation Error",
+                text: "Please Enter your name",
+              });
+              isValid = false;
+              return; // Stop further validation
+            }
+
+            // Email field validation
+            if (!emailInput.value.trim()) {
+              Swal.fire({
+                icon: "error",
+                title: "Validation Error",
+                text: "Please Enter your email",
+              });
+              isValid = false;
+              return;
+            }
+
+            if (!passwordInput.value.trim()) {
+              Swal.fire({
+                icon: "error",
+                title: "Validation Error",
+                text: "Please Enter password",
+              });
+              isValid = false;
+              return; // Stop further validation
+            }
+
+            if (passwordInput.value !== cpasswordInput.value) {
+              Swal.fire({
+                icon: "error",
+                title: "Validation Error",
+                text: "Password and Confirm Password do not match",
+              });
+              isValid = false;
+              return
+            }
+
+            if (![...genderInputs].some((input) => input.checked)) {
+              Swal.fire({
+                icon: "error",
+                title: "Validation Error",
+                text: "Please select your gender",
+              });
+              isValid = false;
+              return
+            }
+            // City validation
+            if (
+              !citySelect.value ||
+              citySelect.value === "--- Select your City ---"
+            ) {
+              Swal.fire({
+                icon: "error",
+                title: "Validation Error",
+                text: "Please select your city",
+              });
+              isValid = false;
+              return;
+            }
+          } catch (error) {
+            // Handle network or other unexpected errors
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "An unexpected error occurred. Please try again later.",
+            });
+          }
+        });
     </script>
     <style>
       .is-invalid {

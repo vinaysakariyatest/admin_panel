@@ -11,3 +11,14 @@
     margin-top: -15px;
     margin-bottom: 15px;
 }
+.main-sidebar a{
+    text-decoration: none;
+  }
+
+  .icon {
+    font-size: 18px;
+    margin: 0 5px;
+  }
+  .delete {
+    color: rgb(245, 26, 26);
+  }
