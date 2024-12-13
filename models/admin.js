@@ -19,9 +19,12 @@ const adminSchema = new mongoose.Schema({
     city:{
         type: String
     },
-    isActive:{
+    isVerifiedEmail :{
         type: Boolean,
         default: false
+    },
+    emailToken: {
+        type: String
     }
 })
 

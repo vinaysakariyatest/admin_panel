@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
+    <title>Send Link</title>
 
     <link rel="stylesheet" href="../style.css" />
 
@@ -21,12 +21,12 @@
   <body>
     <div class="card login-card card-primary">
       <div class="card-header">
-        <h3 class="card-title">Admin Login</h3>
+        <h3 class="card-title">Reset Password</h3>
       </div>
       <form
-        id="loginForm"
+        id="resetForm"
         method="POST"
-        action="/login"
+        action="/reset-link"
         enctype="application/x-www-form-urlencoded"
         novalidate="novalidate"
       >
@@ -41,43 +41,20 @@
               placeholder="Enter email"
             />
           </div>
-          <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
-            <input
-              type="password"
-              name="password"
-              class="form-control"
-              id="exampleInputPassword1"
-              placeholder="Password"
-            />
-          </div>
         </div>
         <div class="card-footer bg-white text-center">
-          <button type="submit" class="btn btn-primary">Login</button>
-          <div class="mt-3">
-            <p>
-              Don't have an account?
-              <a href="/signup" class="text-primary">Sign Up</a>
-            </p>
-            <p>
-              Don't have an password?
-              <a href="/resetLink" class="text-primary">Reset Password</a>
-            </p>
-          </div>
+          <button type="submit" class="btn btn-primary">Send Link</button>
         </div>
       </form>
     </div>
 
-    <script>
+      <script>
       document
-        .getElementById("loginForm")
+        .getElementById("resetForm")
         .addEventListener("submit", async function (e) {
           e.preventDefault();
           const emailInput = document.getElementById("exampleInputEmail1");
-          const passwordInput = document.getElementById(
-            "exampleInputPassword1"
-          );
-
+    
           if (!emailInput.value.trim()) {
             Swal.fire({
               icon: "error",
@@ -87,20 +64,11 @@
             return;
           }
 
-          if (!passwordInput.value.trim()) {
-            Swal.fire({
-              icon: "error",
-              title: "Validation Error",
-              text: "Please Enter password",
-            });
-            return;
-          }
-
           const formData = new FormData(this);
           const data = Object.fromEntries(formData.entries());
 
           try {
-            const response = await fetch("/login", {
+            const response = await fetch("/reset-link", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify(data),
@@ -122,7 +90,7 @@
               Swal.fire({
                 icon: "error",
                 title: "Error",
-                text: result.message || "Login failed, please try again.",
+                text: result.message || "Failed, please try again.",
               });
             }
           } catch (error) {
@@ -134,16 +102,5 @@
           }
         });
     </script>
-    <style>
-      .is-invalid {
-        border: 2px solid red !important;
-      }
-      .text-center {
-        text-align: center;
-      }
-      .mt-3 {
-        margin-top: 1rem;
-      }
-    </style>
-  </body>
+</body>
 </html>

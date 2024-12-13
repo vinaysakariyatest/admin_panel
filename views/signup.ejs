@@ -126,90 +126,6 @@
       </form>
     </div>
 
-    <!-- <script>
-      const form = document.getElementById("registrationForm");
-      const nameInput = document.getElementById("exampleInputName");
-      const emailInput = document.getElementById("exampleInputEmail1");
-      const passwordInput = document.getElementById("exampleInputPassword1");
-      const cpasswordInput = document.getElementById("exampleInputPassword2");
-      const mobileInput = document.getElementById("exampleInputMobile");
-      const genderInputs = document.getElementsByName("gender");
-
-      form.addEventListener("submit", (event) => {
-        event.preventDefault(); // Prevent the form from submitting immediately
-        let isValid = true;
-
-        // Name validation
-        if (nameInput.value.trim() === "") {
-          showError(nameInput);
-          isValid = false;
-        } else {
-          hideError(nameInput);
-        }
-
-        // Email validation
-        if (!isValidEmail(emailInput.value.trim())) {
-          showError(emailInput);
-          isValid = false;
-        } else {
-          hideError(emailInput);
-        }
-
-        // Password validation
-        if (passwordInput.value.trim() === "") {
-          showError(passwordInput);
-          isValid = false;
-        } else {
-          hideError(passwordInput);
-        }
-
-        // Confirm Password validation
-        if (cpasswordInput.value.trim() === "") {
-          showError(cpasswordInput);
-          isValid = false;
-        } else {
-          hideError(cpasswordInput);
-        }
-
-        // Password and confirm password match check
-        if (passwordInput.value !== cpasswordInput.value) {
-          alert("Password and Confirm Password do not match");
-          isValid = false;
-        }
-
-        if (mobileInput.value.trim() === "") {
-          showError(mobileInput);
-          isValid = false;
-        } else {
-          hideError(mobileInput);
-        }
-
-         // Gender validation
-  if (![...genderInputs].some((input) => input.checked)) {
-    alert("Please select your gender");
-    isValid = false;
-  }
-
-        // Submit the form if all inputs are valid
-        if (isValid) {
-          form.submit();
-        }
-      });
-
-      function showError(input) {
-        input.classList.add("is-invalid");
-      }
-
-      function hideError(input) {
-        input.classList.remove("is-invalid");
-      }
-
-      function isValidEmail(email) {
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailPattern.test(email);
-      }
-    </script> -->
-
     <script>
       document
         .getElementById("registrationForm")
@@ -231,7 +147,6 @@
           const citySelect = document.querySelector("#city");
           const data = Object.fromEntries(formData.entries());
 
-          // Send data to the backend using fetch
           try {
             const response = await fetch("/signup", {
               method: "POST",
@@ -244,7 +159,6 @@
             const result = await response.json();
 
             if (response.ok) {
-              // Success Alert
               Swal.fire({
                 icon: "success",
                 title: "Success",
@@ -299,7 +213,7 @@
                 text: "Password and Confirm Password do not match",
               });
               isValid = false;
-              return
+              return;
             }
 
             if (![...genderInputs].some((input) => input.checked)) {
@@ -309,7 +223,7 @@
                 text: "Please select your gender",
               });
               isValid = false;
-              return
+              return;
             }
             // City validation
             if (

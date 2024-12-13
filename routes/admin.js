@@ -9,6 +9,25 @@ router.get("/",admin.loginForm)
 router.get("/signup",admin.signupForm)
 router.post("/signup",admin.signup)
 
+// =========Verify Mail========
+router.get("/verify-mail",admin.verifyEmail)
+
+// ============Reset Password==========
+router.get("/resetForm",admin.getResetForm)
+
+router.get("/resetLink", async (req, res) => {
+    res.render("resetLink")
+})
+
+router.post("/reset-link",admin.sendResetLink)
+
+// router.get("/paswordForm", admin.getResetPassForm)
+router.get("/reset-password", async (req, res) => {
+    res.render("resetPassword")
+})
+
+router.post("/reset-password",admin.resetPassword)
+
 // ==========Login==========
 router.post("/login",admin.login)
 
@@ -19,8 +38,6 @@ router.get('/login', (req, res) => {
 });
 
 router.get('/logout',admin.logout)
-
-// router.get('/adminList',admin.adminList)
 
 router.get('/admin-list',isAuthenticated,admin.getAdminList)
 
